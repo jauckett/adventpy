@@ -1,8 +1,13 @@
 __author__ = 'john'
 
 from Item import *
-from Room import *
+from World import *
 from Character import *
+import sys
+
+def help():
+    print ("I can't help you sorry.")
+
 
 # Fix Python 2.x.
 try: input = raw_input
@@ -22,15 +27,15 @@ while True:
     print
     print ('-------------------------------------------------------------')
     print (room.description, "(", room.number, ")")
+    print ("Visible exits :", room.showExits())
 
-#    itemsInRoom = items.findItemsInRoom(inRoom)
     itemsInRoom = room.items
     if (len(itemsInRoom) > 0):
         print ("Visible items :")
         for i in itemsInRoom:
             print ("    ", i.description)
     cmd = input('>')
-
+    cmd = cmd.lower()
 
     # check for movement first
     if (cmd in ['n', 's', 'e', 'w', 'u', 'd']):
@@ -42,9 +47,9 @@ while True:
             inRoom = newRoom
         continue
 
+    # check for Inventory command
     if (cmd == 'i'):
         print ("I am carrying :")
-#        print character.inventory
         if (len(character.inventory) == 0):
             print ("    Nothing")
             print
@@ -52,19 +57,27 @@ while True:
             print ("   ", i.name)
         continue
 
+    if (cmd == "quit"):
+        print ("Bye...")
+        sys.exit(0)
+
+    if (cmd == "help"):
+        help()
+        continue
+
+
     # TODO parse the cmd properly
-    cmd = cmd.lower()
+
     words = cmd.split(" ")
     if (len(words) > 2):
         print ("I am not that smart, I only understand two word sentences!")
-
     else:
         if (words[0] in ['take', 'get']):
             if (not room.itemInRoom(words[1])):
                 print ("I can't see", words[1], " here!")
+                continue
             else:
                 r = room.itemFromRoom(words[1])
-#                print ("ITEM FROM ROOM :", r)
                 character.itemToChar(r)
                 print ("Getting", words[1])
                 continue

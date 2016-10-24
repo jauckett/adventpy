@@ -25,6 +25,23 @@ class Room:
                 return True
         return False
 
+
+    def showExits(self):
+        s = ""
+        if (self.exits[0] > 0):
+            s = s + 'n '
+        if (self.exits[1] > 0):
+            s = s + 's '
+        if (self.exits[2] > 0):
+            s = s + 'e '
+        if (self.exits[3] > 0):
+            s = s + 'w '
+        if (self.exits[4] > 0):
+            s = s + 'u '
+        if (self.exits[5] > 0):
+            s = s + 'd '
+        return s
+
 class World:
 
     def __init__(self):
@@ -49,9 +66,7 @@ class World:
         self.getRoom(n).itemToRoom(i)
 
     def move(self, room, dir):
-
         newRoom = room.number
-
         if (dir == 'n'):
             newRoom = room.exits[0]
         if (dir == 's'):
@@ -67,13 +82,15 @@ class World:
 
         if (newRoom == 0):
             return room.number
-
         return newRoom
+
+
+
 
 def initWorld(world):
 
     # self, n, name, desc, exits
-    room1 = Room(1, "Main Street", "Main street of Rockridge", [2, 5, 3, 4, 0, 0])
+    room1 = Room(1, "Main Street", "Main street of Rockridge", [2, 5, 4, 3, 0, 0])
     room2 = Room(2, "Saloon", "In the saloon", [0, 1, 0, 0, 0, 0])
     room3 = Room(3, "End of the road", "At the end of the road", [0, 0, 1, 0, 0, 0])
     room4 = Room(4, "Graveyard", "In the middle of the Rockridge graveyard",             [0, 0, 0, 1, 0,0])
